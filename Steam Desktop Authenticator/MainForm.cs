@@ -23,6 +23,7 @@ namespace Steam_Desktop_Authenticator
         private long currentSteamChunk = 0;
         private string passKey = null;
         private bool startSilent = false;
+        private string AccountName = null;
 
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
@@ -40,6 +41,11 @@ namespace Steam_Desktop_Authenticator
         public void StartSilent(bool silent)
         {
             startSilent = silent;
+        }
+
+        public void SetAccountName(string user)
+        {
+            AccountName = user;
         }
 
         // Form event handlers
@@ -92,6 +98,11 @@ namespace Steam_Desktop_Authenticator
             if (startSilent)
             {
                 this.WindowState = FormWindowState.Minimized;
+            }
+
+            if (AccountName != null)
+            {
+                setAccountName();
             }
         }
 
@@ -566,6 +577,12 @@ namespace Steam_Desktop_Authenticator
                 popupFrm.Account = currentAccount;
                 txtLoginToken.Text = currentAccount.GenerateSteamGuardCodeForTime(steamTime);
                 groupAccount.Text = "Account: " + currentAccount.AccountName;
+
+                if (currentAccount.AccountName == AccountName)
+                {
+                    CopyLoginToken();
+                    Application.Exit();
+                }
             }
         }
 
@@ -734,6 +751,11 @@ namespace Steam_Desktop_Authenticator
             {
                 CopyLoginToken();
             }
+        }
+
+        private void setAccountName()
+        {
+            listAccounts.SelectedIndex = listAccounts.FindString(AccountName);
         }
     }
 }

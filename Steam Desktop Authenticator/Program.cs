@@ -21,6 +21,10 @@ namespace Steam_Desktop_Authenticator
           HelpText = "Start minimized")]
         public bool Silent { get; set; }
 
+        [Option('u', "user", Required = false,
+          HelpText = "User for Get key")]
+        public string User { get; set; }
+
         [ParserState]
         public IParserState LastParserState { get; set; }
 
@@ -125,6 +129,8 @@ namespace Steam_Desktop_Authenticator
                 MainForm mf = new MainForm();
                 mf.SetEncryptionKey(options.EncryptionKey);
                 mf.StartSilent(options.Silent);
+                mf.SetAccountName(options.User);
+                
                 Application.Run(mf);
             }
         }
